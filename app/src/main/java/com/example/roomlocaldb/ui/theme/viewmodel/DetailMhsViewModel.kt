@@ -64,6 +64,31 @@ class DetailMhsViewModel(
     }
 }
 
+/*Data class untuk menampung data yang akan menampilkan di UI*/
+data class DetailUiState(
+    val detailUiEvent: MahasiswaEvent = MahasiswaEvent(),
+    val isLoading: Boolean = false,
+    val isError: Boolean = false,
+    val errorMessage: String = ""
+) {
+    val isUiEventEmpty: Boolean
+        get() = detailUiEvent == MahasiswaEvent()
 
+    val isUiEventNotEmpty: Boolean
+        get() = detailUiEvent != MahasiswaEvent()
+}
+
+
+//memindahkan data dari entity ke ui
+fun Mahasiswa.toDetailUiEvent(): MahasiswaEvent{
+    return MahasiswaEvent(
+        nim = nim,
+        nama = nama,
+        jeniskelamin = jenisKelamin,
+        alamat = alamat,
+        kelas = kelas,
+        angkatan = angkatan
+    )
+}
 
 
