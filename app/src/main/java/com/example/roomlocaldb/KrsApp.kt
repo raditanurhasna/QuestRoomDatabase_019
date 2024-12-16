@@ -8,6 +8,6 @@ class KrsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        containerApp = ContainerApp(this,)
+        containerApp = ContainerApp(this)
     }
 }
