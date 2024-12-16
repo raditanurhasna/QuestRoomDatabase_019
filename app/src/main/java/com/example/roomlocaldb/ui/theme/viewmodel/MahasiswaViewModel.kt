@@ -65,4 +65,46 @@ class MahasiswaViewModel (
 
 
 
+data class MahasiswaEvent(
+    val nim : String = "",
+    val nama : String = "",
+    val jeniskelamin : String = "",
+    val alamat : String = "",
+    val kelas : String = "",
+    val angkatan : String = ""
+
+)
+
+fun MahasiswaEvent.toMahasiswaEntity(): Mahasiswa = Mahasiswa(
+    nim = nim,
+    nama = nama,
+    jenisKelamin = jeniskelamin,
+    alamat = alamat,
+    kelas = kelas,
+    angkatan = angkatan,
+)
+
+data class FormErrorState(
+    val nim: String? = null,
+    val nama: String? = null,
+    val jeniskelamin: String? = null,
+    val alamat: String? = null,
+    val kelas: String? = null,
+    val angkatan: String? = null,
+) {
+    fun isValid(): Boolean {
+        return nim == null
+                && nama == null
+                && jeniskelamin == null
+                && alamat == null
+                && kelas == null
+                && angkatan == null
+    }
+}
+
+data class MhsUIState(
+    val mahasiswaEvent: MahasiswaEvent = MahasiswaEvent(),
+    val isEntryValid: FormErrorState = FormErrorState(),
+    val snackBarMessage: String? = null,
+)
 
