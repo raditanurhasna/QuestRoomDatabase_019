@@ -30,7 +30,7 @@ import com.example.roomlocaldb.ui.theme.viewmodel.FormErrorState
 import com.example.roomlocaldb.ui.theme.viewmodel.MahasiswaEvent
 import com.example.roomlocaldb.ui.theme.viewmodel.MahasiswaViewModel
 import com.example.roomlocaldb.ui.theme.viewmodel.MhsUIState
-import com.example.roomlocaldb.ui.theme.viewmodel.PenyediaViewModell
+import com.example.roomlocaldb.ui.theme.viewmodel.PenyediaViewModel
 import kotlinx.coroutines.launch
 
 
@@ -44,7 +44,7 @@ fun InsertMhsView(
     onBack: () -> Unit,
     onNavigate: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: MahasiswaViewModel = viewModel(factory = PenyediaViewModell.Factory)
+    viewModel: MahasiswaViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     val uiState = viewModel.uiState
     val snackbarHostState = remember { SnackbarHostState()}
@@ -125,7 +125,7 @@ fun FormMahasiswa(
             modifier = Modifier.fillMaxWidth(),
             value = mahasiswaEvent.nim,
             onValueChange = {
-                onValueChange(mahasiswaEvent.copy(nama = it))
+                onValueChange(mahasiswaEvent.copy(nim = it))
             },
             label = { Text("Nim") },
             isError = errorState.nim != null,
@@ -207,10 +207,10 @@ fun FormMahasiswa(
             modifier = Modifier.fillMaxWidth(),
             value = mahasiswaEvent.angkatan,
             onValueChange = {
-                onValueChange(mahasiswaEvent.copy(alamat = it))
+                onValueChange(mahasiswaEvent.copy(angkatan = it))
             },
             label = { Text("Angkatan") },
-            isError = errorState.nim != null,
+            isError = errorState.angkatan != null,
             placeholder = { Text("Masukan angkatan") },
         )
         Text(
