@@ -84,5 +84,138 @@ fun HomeMhsView(
     }
 }
 
+@Composable
+fun BodyHomeMhsView(
+    homeUiState: HomeUiState,
+    onClick: (String) -> Unit = { },
+    modifier: Modifier = Modifier
+){
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() } //snackbar state
+    when {
+        homeUiState.isLoading -> {
+            //menampilkan indikator loading
+            Box(
+                modifier = Modifier.fillMaxSize(),
+            ){
+                CircularProgressIndicator()
+            }
+        }
+        homeUiState.isError -> {
+            // menampilkan pesan error
+            LaunchedEffect(homeUiState.errorMessage) {
+                homeUiState.errorMessage?.let { message ->
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(message) //tampilkan snackbar
+                    }
+                }
+            }
+        }
+        homeUiState.listMhs.isEmpty() -> {
+            // menampilkan pesan jika data kosong
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                Text(
+                    text = "Tidak ada data mahasiswa.",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+
+        else -> {
+            //menampilkan daftar mahasiswa
+            ListMahasiswa(
+                listMhs = homeUiState.listMhs,
+                onClick = {
+                    onClick(it)
+                    println(
+                        it
+                    )
+                },
+                modifier = modifier
+            )
+        }
+    }
+}
+
+@Composable
+fun ListMahasiswa(
+    listMhs: List<Mahasiswa>,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = {}
+){
+    LazyColumn (
+        modifier = modifier
+    ){
+        items(
+            items = listMhs,
+            itemContent = { mhs ->
+                CardMhs(
+                    mhs = mhs,
+                    onClick = { onClick(mhs.nim) }
+                )
+            }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CardMhs(
+    mhs: Mahasiswa,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = { }
+){
+    Card (
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ){
+        Column (
+            modifier = Modifier.padding(8.dp)
+        ){
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(imageVector = Icons.Filled.Person, contentDescription = "")
+                Spacer(modifier = Modifier.padding(4.dp))
+                Text(
+                    text = mhs.nama,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+            }
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "" )
+                Spacer(modifier = Modifier.padding(4.dp))
+                Text(
+                    text = mhs.nim,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+            }
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(imageVector = Icons.Filled.Home, contentDescription = "")
+                Spacer(modifier = Modifier.padding(4.dp))
+                Text(
+                    text = mhs.kelas,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+        }
+    }
+}
 
 
